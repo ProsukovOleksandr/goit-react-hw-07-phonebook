@@ -1,6 +1,5 @@
-import { persistedAppReducer } from './appReducer';
+import { appReducer } from './appReducer';
 import {
-  persistStore,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -11,7 +10,7 @@ import {
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
-  reducer: persistedAppReducer,
+  reducer: appReducer,
   
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -20,4 +19,3 @@ export const store = configureStore({
       },
     }),
 });
-export const persistor = persistStore(store);

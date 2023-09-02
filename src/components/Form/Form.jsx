@@ -1,29 +1,28 @@
-
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContacts, selectContacts } from 'redux/appReducer';
-
+import { selectContacts } from 'redux/appReducer';
+import { addContacts } from 'redux/operations';
 export const ContactForm = () => {
-  const contacts = useSelector(selectContacts);
+const items  = useSelector(selectContacts);
   const dispatch = useDispatch();
   let initContact = {
     name:'',
     numbers:'',
 
   };
-  const handleAddContact = contact => {
-    let { name } = contact;
-    if (contacts.find(contact => contact.name === name)) {
-      alert(`${name} is already in contacts`);
-      return;
-    }
-    dispatch(addContacts([...contacts, contact]));
-  };
   const onSubmit = e =>{
     e.preventDefault();
-    handleAddContact(initContact);
-  e.target[0].value = '';
-  e.target[1].value = '';
+    const form = e.target;
+     if (items.find(contact => contact.name === form[0].value)) {
+     alert(`${form[0].value} is already in contacts`);
+     form.reset();
+     return;
+     }
+    dispatch(addContacts({
+      name:form[0].value, 
+      numbers:form[1].value}));
+    form.reset();
+
   }
 const onChange = e =>{
 let id = nanoid(5);
