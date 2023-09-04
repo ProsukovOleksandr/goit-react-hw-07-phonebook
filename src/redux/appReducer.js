@@ -14,52 +14,53 @@ export const initialState = {
 const appSlice = createSlice({
   name: 'app',
   initialState,
- 
-
-    extraReducers: {
-      setFilter(state, action) {
-        state.filter = action.payload;
-      },
-      
-      [fetchContacts.pending](state) {
+ reducers:{
+  setFilter(state, action) {
+    state.filter = action.payload;
+  },
+ },
+    extraReducers:(builder) => {
+      builder
+      .addCase(fetchContacts.pending,state =>{
         state.contacts.isLoading = true;
-      },
-      [fetchContacts.fulfilled](state, action) {
+      })
+      .addCase(fetchContacts.fulfilled,(state, action)=>{
         state.contacts.isLoading = false;
         state.contacts.error = null;
         state.contacts.items = action.payload;
-      },
-      [fetchContacts.rejected](state, action) {
+      })
+      .addCase(fetchContacts.rejected,(state, action)=>{
         state.contacts.isLoading = false;
         state.contacts.error = action.payload;
-      },
-      [addContacts.pending](state) {
+      })
+      .addCase(addContacts.pending,(state)=>{
         state.contacts.isLoading = true;
-      },
-      [addContacts.fulfilled](state, action) {
+      })
+      .addCase(addContacts.fulfilled,(state, action)=>{
         state.contacts.isLoading = false;
         state.contacts.error = null;
         state.contacts.items.push(action.payload);
-      },
-      [addContacts.rejected](state, action) {
+      })
+      .addCase(addContacts.rejected,(state, action)=>{
         state.contacts.isLoading = false;
         state.contacts.error = action.payload;
-      },
-      [deleteContacts.pending](state) {
+      })
+      .addCase(deleteContacts.pending,(state)=>{
         state.contacts.isLoading = true;
-      },
-      [deleteContacts.fulfilled](state, action) {
+      })
+      .addCase(deleteContacts.fulfilled,(state, action)=>{
         state.contacts.isLoading = false;
         state.contacts.error = null;
         const index = state.contacts.items.findIndex(
           contact => contact.id === action.payload.id
         );
         state.contacts.items.splice(index, 1);
-      },
-      [deleteContacts.rejected](state, action) {
+      })
+      .addCase(deleteContacts.rejected,(state, action)=>{
         state.contacts.isLoading = false;
-        state.contacts.error = action.payload;
-      },
+        state.contacts.error = null;
+        state.contacts.items = action.payload;
+      })
     }
   });
 // Генератори екшенів
